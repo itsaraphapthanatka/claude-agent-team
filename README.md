@@ -8,12 +8,12 @@ Roles: product-manager · architect · ux-designer · backend-dev · mobile-dev 
 
 **A. As a personal skill (simplest)** — available in every project on that machine:
 ```bash
-git clone <this-repo-url> ~/.claude/skills/agent-team
+git clone https://github.com/itsaraphapthanatka/claude-agent-team.git ~/.claude/skills/agent-team
 ```
 
 **B. As a plugin from this repo (also works as a marketplace)** — inside Claude Code:
 ```
-/plugin marketplace add <github-owner>/<repo>
+/plugin marketplace add itsaraphapthanatka/claude-agent-team
 /plugin install agent-team@itsaraphap-tools
 ```
 
@@ -46,4 +46,4 @@ reference/roles.md        roles, profiles, config schema
 The team lives in the project's `.claude/` (agents, commands, `agent-team.json`, `agent-memory/`) and its docs folder — commit both. Generated paths are relative to the project root, so cloning the repo(s) in the same folder layout is all that is needed; the context file documents the required layout.
 
 ## ภาษาไทย
-ติดตั้งบนเครื่องใหม่: `git clone <url> ~/.claude/skills/agent-team` แล้วเปิดโปรเจกต์ใน Claude Code พิมพ์ `/agent-team init` ตอบคำถาม 4 ข้อ ระบบจะสำรวจโค้ดจริงและสร้างทีมให้ เปิด session ใหม่หนึ่งครั้งเพื่อโหลด agent ทีมที่สร้างแล้วอยู่ใน `.claude/` ของโปรเจกต์ commit ไปกับ repo ได้เลย
+ติดตั้งบนเครื่องใหม่: `git clone https://github.com/itsaraphapthanatka/claude-agent-team.git ~/.claude/skills/agent-team` แล้วเปิดโปรเจกต์ใน Claude Code พิมพ์ `/agent-team init` ตอบคำถาม 4 ข้อ ระบบจะสำรวจโค้ดจริงและสร้างทีมให้ เปิด session ใหม่หนึ่งครั้งเพื่อโหลด agent ทีมที่สร้างแล้วอยู่ใน `.claude/` ของโปรเจกต์ commit ไปกับ repo ได้เลย
