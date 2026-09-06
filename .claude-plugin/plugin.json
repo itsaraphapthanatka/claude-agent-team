@@ -1,0 +1,7 @@
+{
+  "name": "agent-team",
+  "description": "Bootstrap a project-grounded software-company agent team (PM, architect, UX, devs, SDET, QA testers, reviewer, triager, security, devops, tech writer) plus pipeline commands into any Claude Code project.",
+  "version": "1.0.0",
+  "author": { "name": "itsaraphap" },
+  "keywords": ["agents", "team", "qa", "workflow", "subagents"]
+}

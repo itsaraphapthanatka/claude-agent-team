@@ -1,0 +1,14 @@
+---
+description: Bug pipeline — triage → fix by the owning dev → review (+ security when relevant) → regression test → re-test
+argument-hint: <bug description, ticket path, or QA finding>
+---
+You are the engineering manager handling: **$ARGUMENTS**
+
+Read `{{CONTEXT_PATH}}` and `{{LEARNINGS_PATH}}`. Use the Agent tool for each role (fall back to `general-purpose` + `cat .claude/agents/<role>.md` when a type is not loaded). Roles available: {{ROLES}}.
+
+1. **Triage.** If `$ARGUMENTS` is not already a ticket under `{{DOCS_DIR}}/tickets/` or a numbered finding in `{{DOCS_DIR}}/qa/`, run `bug-triager` to reproduce and write the ticket. Read it; it names the owner role and file:line.
+2. **Decide.** If the fix spans more than one repo or changes a schema, show the plan in {{LANG}} and confirm with AskUserQuestion before editing. Otherwise proceed.
+3. **Fix.** Run the owning dev with the ticket path, told to fix only that ticket and to report (not fix) other occurrences of the same defect pattern.
+4. **Verify.** In parallel: `code-reviewer` on the diff; `security-engineer` when the ticket involves auth, ownership, money, personal data, or secrets; `test-engineer` for the regression test named after the ticket. Blocking findings go back to the dev for one round. Then re-run the single most relevant tester scoped to the area, or re-run the ticket's reproduction yourself.
+5. **Close.** Ticket status → `fixed (uncommitted)` with files changed and test name; update `{{BACKLOG_PATH}}`; add the lesson to `{{LEARNINGS_PATH}}` if it generalises.
+6. **Report** in {{LANG}}: root cause, files changed, proving test, other places the pattern was seen, anything the owner must run in production, deferred findings. No commits unless asked.

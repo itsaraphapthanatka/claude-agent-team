@@ -1,0 +1,11 @@
+{
+  "name": "itsaraphap-tools",
+  "owner": { "name": "itsaraphap" },
+  "plugins": [
+    {
+      "name": "agent-team",
+      "source": "./",
+      "description": "Project-grounded agent company: 16 roles + /feature, /fix, /test-all pipelines. Run /agent-team init in any project."
+    }
+  ]
+}
