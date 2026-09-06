@@ -6,6 +6,7 @@
 | product-manager | think | always | Read, Grep, Glob, Bash, Write, Edit, WebSearch, WebFetch |
 | architect | think | always | + WebSearch, WebFetch |
 | ux-designer | think | any UI | Read, Grep, Glob, Bash, Write, WebSearch, WebFetch |
+| ui-designer | think | any UI (design system, component specs, visual QA) | same |
 | backend-dev | build | server code | Read, Edit, Write, Grep, Glob, Bash, WebSearch, WebFetch |
 | mobile-dev | build | RN/Expo/Flutter/native | same |
 | web-dev | build | web front-end | same |
@@ -32,7 +33,7 @@ Heavy roles (get the top effort in every profile): architect, security-engineer,
 Per-role override in config: `"overrides": {"code-reviewer": {"model": "opus", "effort": "max"}}`.
 
 ## Default preloaded skills (only if the skill exists on the machine; render checks `~/.claude/skills` and `.claude/skills`)
-architect, code-reviewer → scrutinize · backend-dev, mobile-dev, web-dev, bug-triager → debug-mantra · ux-designer → artifact-design · tech-writer → post-mortem
+architect, code-reviewer → scrutinize · backend-dev, mobile-dev, web-dev, bug-triager → debug-mantra · ux-designer, ui-designer → artifact-design · tech-writer → post-mortem
 
 ## Config schema (`.claude/agent-team.json`)
 ```json

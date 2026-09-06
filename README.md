@@ -2,7 +2,7 @@
 
 `/agent-team init` explores the current project, asks four questions (profile, roles, report language, docs location), then generates a team of subagents (`.claude/agents/`), pipeline commands (`.claude/commands/`: `/feature`, `/fix`, `/test-all`, `/prd`, `/adr`, `/security-audit`, `/release`, `/standup`, `/review`, `/team`) and a shared docs folder (`PROJECT-CONTEXT.md`, `TEAM.md`, `LEARNINGS.md`, `product/BACKLOG.md`) — all grounded in that project's real code. Every agent reads the context file and its own persistent memory first, follows an expert protocol (plan → verify → self-review → leave lessons), and reports in your language.
 
-Roles: product-manager · architect · ux-designer · backend-dev · mobile-dev · web-dev · test-engineer · api-tester · e2e-tester · mobile-tester · web-tester · code-reviewer · bug-triager · security-engineer · devops-engineer · tech-writer. Profiles: `max` (fable/max), `balanced` (opus+sonnet), `economy` (sonnet+haiku). Details: `reference/roles.md`.
+Roles: product-manager · architect · ux-designer · ui-designer · backend-dev · mobile-dev · web-dev · test-engineer · api-tester · e2e-tester · mobile-tester · web-tester · code-reviewer · bug-triager · security-engineer · devops-engineer · tech-writer. Profiles: `max` (fable/max), `balanced` (opus+sonnet), `economy` (sonnet+haiku). Details: `reference/roles.md`.
 
 ## Install on another machine (pick one)
 

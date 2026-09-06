@@ -16,10 +16,10 @@ LIGHT = {"mobile-tester", "web-tester", "tech-writer"}
 DEFAULT_SKILLS = {
     "architect": ["scrutinize"], "code-reviewer": ["scrutinize"],
     "backend-dev": ["debug-mantra"], "mobile-dev": ["debug-mantra"], "web-dev": ["debug-mantra"], "bug-triager": ["debug-mantra"],
-    "ux-designer": ["artifact-design"], "tech-writer": ["post-mortem"],
+    "ux-designer": ["artifact-design"], "ui-designer": ["artifact-design"], "tech-writer": ["post-mortem"],
 }
 CATEGORY = {
-    "product-manager": "think", "architect": "think", "ux-designer": "think", "tech-writer": "think",
+    "product-manager": "think", "architect": "think", "ux-designer": "think", "ui-designer": "think", "tech-writer": "think",
     "backend-dev": "build", "mobile-dev": "build", "web-dev": "build", "devops-engineer": "build", "test-engineer": "build",
     "api-tester": "adversarial", "e2e-tester": "adversarial", "mobile-tester": "adversarial", "web-tester": "adversarial",
     "code-reviewer": "adversarial", "bug-triager": "adversarial", "security-engineer": "adversarial",

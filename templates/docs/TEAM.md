@@ -10,6 +10,7 @@ What each role does, in one line:
 - `product-manager` PRD, user stories, acceptance criteria, backlog priority → `product/`
 - `architect` ADR, technical design naming endpoints/schemas/migrations per repo, spikes → `adr/`, `design/`
 - `ux-designer` flows, screen specs, copy in every supported language, HTML mockups → `design/ux/`
+- `ui-designer` design system, component specs with real class names, visual QA → `design/DESIGN-SYSTEM.md`, `design/ui/`
 - `backend-dev` / `mobile-dev` / `web-dev` implement from PRD + design in their repo, prove with the repo's checks and tests
 - `test-engineer` permanent automated tests and test infrastructure; turns findings into regression tests
 - `api-tester`, `e2e-tester`, `mobile-tester`, `web-tester` exploratory system test runs, report only
@@ -21,7 +22,7 @@ What each role does, in one line:
 ## Commands
 | Command | Flow |
 |---|---|
-| `/feature <idea>` | product-manager → architect (+ux) → scrutiny → **checkpoint** → devs in parallel → code-reviewer + security-engineer → test-engineer → testers → tech-writer |
+| `/feature <idea>` | product-manager → architect (+ux → ui) → scrutiny → **checkpoint** → devs in parallel → code-reviewer + security-engineer → test-engineer → testers → tech-writer |
 | `/fix <bug>` | bug-triager → owning dev → code-reviewer (+security) → regression test → re-test → ticket closed |
 | `/prd`, `/adr`, `/security-audit`, `/release`, `/test-all`, `/review`, `/standup`, `/team` | single-role or utility flows |
 
