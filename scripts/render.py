@@ -41,6 +41,10 @@ def model_effort(role, cfg):
     prof = PROFILES[cfg.get("profile", "balanced")]
     tier = "heavy" if role in HEAVY else ("light" if role in LIGHT else "other")
     model, effort = prof[tier]
+    # top-level "model" swaps the model for every role while keeping the profile's
+    # effort tiers. Useful when one model runs out of quota but you still want the
+    # max-effort setup, e.g. {"profile": "max", "model": "opus"}.
+    model = cfg.get("model", model)
     ov = cfg.get("overrides", {}).get(role, {})
     return ov.get("model", model), ov.get("effort", effort)
 
