@@ -1,7 +1,7 @@
 ---
 name: agent-team
 description: "Bootstrap or extend a full software-company agent team (PM, architect, UX + UI designers, backend/mobile/web devs, SDET, QA testers, code reviewer, bug triager, security, devops, tech writer) plus pipeline commands (/feature, /fix, /test-all, …) in the current project, grounded in that project's real code. Use when the user wants an agent team, dev team, QA team, tester team, or says สร้างทีม / ทีม agent / ทีม dev / ทีม tester for a project."
-argument-hint: "init [--profile max|balanced|economy] [--roles core|full|<list>] [--lang Thai|English] | add <role> | status | upgrade <role>"
+argument-hint: "init [--profile max|balanced|economy] [--roles core|full|<list>] [--lang Thai|English] | add <role> | status | upgrade <role|all>"
 disable-model-invocation: false
 ---
 
@@ -37,7 +37,14 @@ Render one role from `templates/agents/<role>.md` with `--only <role>` (config m
 List `.claude/agents` and `.claude/commands`, run `--check`, show model/effort per agent, size of each `.claude/agent-memory/<role>/`, and the age of `PROJECT-CONTEXT.md` versus the newest commit (stale context is the usual cause of dumb agents).
 
 ## `upgrade <role|all>`
-Re-render from templates with `--force --only <role>`, then re-apply that role's `specifics` from the config. Show the diff before overwriting anything the user may have hand-edited (`git diff` if tracked, otherwise a backup copy `*.bak`).
+`--scope` selects what gets re-rendered (`agents`, `commands`, `docs`, `all`, comma-separated). Upgrades never include `docs`:
+
+- `upgrade <role>` — `--force --scope agents --only <role>`, then re-apply that role's `specifics` from the config.
+- `upgrade all` — `--force --scope agents,commands`. Commands change between template versions too, so a per-role loop is not an "upgrade all".
+
+**Never run a bare `--force` on an initialised project.** Without `--scope` it also re-renders `<docs_dir>/{PROJECT-CONTEXT.md,TEAM.md,LEARNINGS.md,product/BACKLOG.md}`, resetting the hand-filled context that makes the team smart back to empty TODO scaffolds. If that has already happened, each clobbered file has a `.bak` beside it: restore from the `.bak`, then delete the `.bak`s. (`--scope docs` is the deliberate way to reset those scaffolds.)
+
+Show the diff before overwriting anything the user may have hand-edited (`git diff` if tracked, otherwise compare against the `*.bak`), and finish with `--check`.
 
 ## Rules
 - Never write secrets into any generated file. Env var names only.

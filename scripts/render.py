@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Render an agent team into a project from templates + config.
-Usage: render.py --config <agent-team.json> [--only <role>] [--force] [--check] [--out <project_root>]
+Usage: render.py --config <agent-team.json> [--only <role>] [--scope agents,commands,docs|all]
+                 [--force] [--check] [--out <project_root>]
 """
 import argparse, json, os, re, sys, datetime, shutil, pathlib
 
@@ -29,6 +30,28 @@ CATEGORY = {
 CRITIC = {"build": "code reviewer and the QA team", "adversarial": "engineer who wrote the code", "think": "CTO who has to pay for it"}
 VALID_MODELS = {"fable", "opus", "sonnet", "haiku", "inherit"}
 VALID_EFFORT = {"low", "medium", "high", "xhigh", "max"}
+SCOPES = ("agents", "commands", "docs")
+
+def parse_scope(raw, only):
+    """What to (re-)render. Default keeps the historical behaviour: a bare run writes
+    everything (init), `--only <role>` writes just that role's agent.
+    `docs` re-renders the four hand-filled doc templates back to empty TODO scaffolds,
+    so upgrades must ask for `--scope agents,commands` rather than a bare `--force`."""
+    if raw is None:
+        return {"agents"} if only else set(SCOPES)
+    out = set()
+    for part in (p.strip() for p in raw.split(",")):
+        if not part:
+            continue
+        if part == "all":
+            out |= set(SCOPES)
+        elif part in SCOPES:
+            out.add(part)
+        else:
+            sys.exit(f"--scope: unknown value {part!r} (expected any of: {', '.join(SCOPES)}, all)")
+    if not out:
+        sys.exit(f"--scope: empty (expected any of: {', '.join(SCOPES)}, all)")
+    return out
 
 def skill_exists(name):
     for base in (pathlib.Path.home() / ".claude/skills", pathlib.Path.cwd() / ".claude/skills"):
@@ -112,6 +135,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
     ap.add_argument("--only")
+    ap.add_argument("--scope", help="comma-separated: agents, commands, docs, all. "
+                                    "Default: everything, or agents only when --only is given.")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--out")
@@ -140,11 +165,16 @@ def main():
         probs += [p for p in (check_frontmatter(f) for f in sorted((root / ".claude/commands").glob("*.md"))) if p]
         print("\n".join(probs) if probs else f"OK: {len(list((root/'.claude/agents').glob('*.md')))} agents, {len(list((root/'.claude/commands').glob('*.md')))} commands, no frontmatter problems")
         sys.exit(1 if probs else 0)
-    roles = [a.only] if a.only else cfg["roles"]
-    log = []
+    scope = parse_scope(a.scope, a.only)
+    roles = ([a.only] if a.only else cfg["roles"]) if "agents" in scope else []
+    log, written = [], []
     for role in roles:
-        write(root / ".claude/agents" / f"{role}.md", render_agent(role, cfg, vars_), a.force, log)
-    if not a.only:
+        dest = root / ".claude/agents" / f"{role}.md"
+        write(dest, render_agent(role, cfg, vars_), a.force, log)
+        written.append(dest)
+    if "agents" in scope:
+        (root / ".claude/agent-memory").mkdir(parents=True, exist_ok=True)
+    if "commands" in scope:
         for src in sorted((T / "commands").glob("*.md")):
             # skip pipelines whose roles are absent
             need = {"test-all": {"api-tester", "e2e-tester", "mobile-tester", "web-tester"}, "security-audit": {"security-engineer"},
@@ -153,7 +183,12 @@ def main():
                 log.append(f"SKIP  command {src.stem} (no matching roles)"); continue
             text = render_text(src.read_text(), {**vars_, "ROLES": ", ".join(cfg["roles"]),
                                                   "TESTERS": ", ".join(r for r in cfg["roles"] if r.endswith("-tester"))})
-            write(root / ".claude/commands" / src.name, text, a.force, log)
+            dest = root / ".claude/commands" / src.name
+            write(dest, text, a.force, log)
+            written.append(dest)
+    if "docs" in scope:
+        # These four are hand-filled after init; re-rendering them resets them to TODO
+        # scaffolds (a .bak is kept). Upgrades use --scope agents,commands to skip them.
         repo_rows = "\n".join(f"| {r['name']} | `{P(r['path'])}` | {r.get('stack','TODO')} | {' · '.join('`'+c+'`' for c in r.get('checks', [])) or 'TODO'} |" for r in cfg.get("repos", []))
         role_rows = "\n".join(f"| `{r}` | {CATEGORY[r]} | {model_effort(r, cfg)[0]} / {model_effort(r, cfg)[1]} |" for r in cfg["roles"])
         dvars = {**vars_, "REPO_TABLE": repo_rows or "| TODO | | | |", "ROLE_TABLE": role_rows, "PROFILE": cfg.get("profile", "balanced")}
@@ -161,10 +196,9 @@ def main():
             rel = src.relative_to(T / "docs")
             if rel.name == "PROJECT-CONTEXT.md": rel = rel.with_name(ctx_name)
             write(docs / rel, render_text(src.read_text(), dvars), a.force, log)
-        (root / ".claude/agent-memory").mkdir(parents=True, exist_ok=True)
     print("\n".join(log))
-    probs = [p for p in (check_frontmatter(root / ".claude/agents" / f"{r}.md") for r in roles) if p]
-    print("CHECK:", "; ".join(probs) if probs else "frontmatter OK")
+    probs = [p for p in (check_frontmatter(f) for f in written if f.exists()) if p]
+    print("CHECK:", ("; ".join(probs) if probs else "frontmatter OK") if written else "nothing to check")
 
 if __name__ == "__main__":
     main()
