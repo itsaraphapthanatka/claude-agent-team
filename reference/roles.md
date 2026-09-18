@@ -32,8 +32,10 @@ Heavy roles (get the top effort in every profile): architect, security-engineer,
 
 Per-role override in config: `"overrides": {"code-reviewer": {"model": "opus", "effort": "max"}}`.
 
-## Default preloaded skills (only if the skill exists on the machine; render checks `~/.claude/skills` and `.claude/skills`)
-architect, code-reviewer → scrutinize · backend-dev, mobile-dev, web-dev, bug-triager → debug-mantra · ux-designer, ui-designer → artifact-design · tech-writer → post-mortem
+## Default preloaded skills (only if the skill exists on the machine; render checks `~/.claude/skills`, `.claude/skills`, and installed plugins under `~/.claude/plugins/cache`)
+architect, code-reviewer → scrutinize · backend-dev, bug-triager → debug-mantra · mobile-dev, web-dev → debug-mantra + impeccable · ux-designer, ui-designer → artifact-design + impeccable · tech-writer → post-mortem
+
+`impeccable` ([impeccable.style](https://impeccable.style/), `npx impeccable install`) is the design-craft skill: designers use `audit`/`critique`/`shape`, front-end devs use `polish` on user-visible changes. Absent on the machine, every reference to it degrades to a no-op.
 
 ## Config schema (`.claude/agent-team.json`)
 ```json

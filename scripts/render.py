@@ -15,8 +15,10 @@ PROFILES = {
 LIGHT = {"mobile-tester", "web-tester", "tech-writer"}
 DEFAULT_SKILLS = {
     "architect": ["scrutinize"], "code-reviewer": ["scrutinize"],
-    "backend-dev": ["debug-mantra"], "mobile-dev": ["debug-mantra"], "web-dev": ["debug-mantra"], "bug-triager": ["debug-mantra"],
-    "ux-designer": ["artifact-design"], "ui-designer": ["artifact-design"], "tech-writer": ["post-mortem"],
+    "backend-dev": ["debug-mantra"], "bug-triager": ["debug-mantra"],
+    "mobile-dev": ["debug-mantra", "impeccable"], "web-dev": ["debug-mantra", "impeccable"],
+    "ux-designer": ["artifact-design", "impeccable"], "ui-designer": ["artifact-design", "impeccable"],
+    "tech-writer": ["post-mortem"],
 }
 CATEGORY = {
     "product-manager": "think", "architect": "think", "ux-designer": "think", "ui-designer": "think", "tech-writer": "think",
@@ -32,7 +34,8 @@ def skill_exists(name):
     for base in (pathlib.Path.home() / ".claude/skills", pathlib.Path.cwd() / ".claude/skills"):
         if (base / name / "SKILL.md").exists():
             return True
-    return False
+    # plugin-installed skills: ~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/skills/<name>/
+    return any(pathlib.Path.home().glob(f".claude/plugins/cache/*/*/*/skills/{name}/SKILL.md"))
 
 def yaml_quote(s):
     return '"' + s.replace('"', "'") + '"'

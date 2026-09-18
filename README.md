@@ -42,6 +42,18 @@ reference/roles.md        roles, profiles, config schema
 .claude-plugin/           plugin + marketplace manifests
 ```
 
+## Optional skills the team picks up
+Roles preload a skill only when it exists on the machine (`~/.claude/skills`, the project's `.claude/skills`, or an installed plugin); otherwise the reference degrades to a no-op.
+
+| skill | roles | install |
+|---|---|---|
+| [impeccable](https://impeccable.style/) | ux-designer, ui-designer, web-dev, mobile-dev | `npx impeccable install --global --providers=claude-code` |
+| scrutinize | architect, code-reviewer | — |
+| debug-mantra | backend-dev, mobile-dev, web-dev, bug-triager | — |
+| post-mortem | tech-writer | — |
+
+With `impeccable` installed, designers run its `audit` / `critique` / `shape` before writing a spec and front-end devs run `polish` on user-visible changes; its `DESIGN.md` and the ui-designer's `DESIGN-SYSTEM.md` are reconciled rather than kept as two sources of truth.
+
 ## Moving a generated team to another machine
 The team lives in the project's `.claude/` (agents, commands, `agent-team.json`, `agent-memory/`) and its docs folder — commit both. Generated paths are relative to the project root, so cloning the repo(s) in the same folder layout is all that is needed; the context file documents the required layout.
 
