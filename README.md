@@ -28,7 +28,7 @@ Then open the target project in Claude Code and run `/agent-team init`. Agent ty
 ```bash
 cd ~/.claude/skills/agent-team && git pull
 ```
-Projects already bootstrapped keep their generated files; use `/agent-team upgrade <role>` to re-render a role from the newer templates (a `.bak` is kept).
+Projects already bootstrapped keep their generated files; use `/agent-team upgrade <role>` to re-render one role, or `/agent-team upgrade all` for every role plus the pipeline commands (a `.bak` is kept). Neither touches the hand-filled docs — only an explicit `render.py --scope docs` rewrites those.
 
 ## Layout
 ```
