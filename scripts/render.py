@@ -81,15 +81,15 @@ def render_text(text, vars_):
 
 def protocol(role, cfg, vars_):
     cat = CATEGORY[role]
-    common = (T / "partials" / "expert-protocol.md").read_text()
-    extra = (T / "partials" / f"protocol-{cat}.md").read_text()
+    common = (T / "partials" / "expert-protocol.md").read_text(encoding="utf-8")
+    extra = (T / "partials" / f"protocol-{cat}.md").read_text(encoding="utf-8")
     return render_text(common + "\n" + extra, {**vars_, "ROLE": role.replace("-", " "), "ROLE_SLUG": role, "CRITIC": CRITIC[cat]})
 
 def render_agent(role, cfg, vars_):
     src = T / "agents" / f"{role}.md"
     if not src.exists():
         sys.exit(f"unknown role: {role}")
-    text = src.read_text()
+    text = src.read_text(encoding="utf-8")
     model, effort = model_effort(role, cfg)
     skills = cfg.get("skills", {}).get(role, DEFAULT_SKILLS.get(role, []))
     skills = [s for s in skills if skill_exists(s)]
@@ -106,7 +106,7 @@ def render_agent(role, cfg, vars_):
     return text
 
 def check_frontmatter(path):
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
     if not m:
         return f"{path.name}: no frontmatter"
@@ -128,7 +128,7 @@ def write(path, content, force, log):
         log.append(f"SKIP  {path} (exists; use --force)"); return
     if path.exists() and force:
         shutil.copy(path, str(path) + ".bak")
-    path.write_text(content)
+    path.write_text(content, encoding="utf-8")
     log.append(f"WROTE {path}")
 
 def main():
@@ -141,22 +141,33 @@ def main():
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--out")
     a = ap.parse_args()
-    cfg = json.load(open(a.config))
+    cfg = json.loads(pathlib.Path(a.config).read_text(encoding="utf-8"))
     root = pathlib.Path(a.out or cfg["project_root"])
     docs = pathlib.Path(cfg.get("docs_dir") or root / "docs")
     lang = cfg.get("report_language", "English")
     ctx_name = cfg.get("context_file", "PROJECT-CONTEXT.md")
     # Paths written into agents are RELATIVE to project_root by default (portable across machines/users);
     # set "absolute_paths": true in the config to keep absolute paths.
-    if cfg.get("absolute_paths"):
-        P = lambda x: str(x)
-    else:
-        P = lambda x: os.path.relpath(str(x), str(root)) if os.path.isabs(str(x)) else str(x)
+    absolute = bool(cfg.get("absolute_paths"))
+
+    def P(x):
+        """Path as it will appear inside a rendered agent/doc — always forward slashes.
+
+        These strings become markdown links and arguments the agent hands to its tools.
+        os.path.relpath returns backslashes on Windows, so without the normalisation an
+        agent rendered there gets `docs\\PROJECT-CONTEXT.md`, which is neither a working
+        link nor a path the tools accept. Config-supplied paths (repos[].path) get the
+        same treatment, because a config written on Windows is rendered elsewhere too.
+        """
+        s = str(x)
+        if not absolute and os.path.isabs(s):
+            s = os.path.relpath(s, str(root))
+        return s.replace("\\", "/")
     vars_ = {
-        "PROJECT": cfg["project"], "PROJECT_ROOT": P(root) if cfg.get("absolute_paths") else ".", "DOCS_DIR": P(docs),
+        "PROJECT": cfg["project"], "PROJECT_ROOT": P(root) if absolute else ".", "DOCS_DIR": P(docs),
         "CONTEXT_PATH": P(docs / ctx_name), "LEARNINGS_PATH": P(docs / "LEARNINGS.md"),
         "BACKLOG_PATH": P(docs / "product" / "BACKLOG.md"), "TEAM_PATH": P(docs / "TEAM.md"),
-        "MEMORY_ROOT": ".claude/agent-memory" if not cfg.get("absolute_paths") else str(root / ".claude" / "agent-memory"), "LANG": lang,
+        "MEMORY_ROOT": P(root / ".claude" / "agent-memory") if absolute else ".claude/agent-memory", "LANG": lang,
         "LANG_RULE": f"Reports and documents addressed to the owner are written in {lang}; code identifiers, paths, commands, and HTTP details stay in English.",
         "DATE": datetime.date.today().isoformat(),
     }
@@ -181,7 +192,7 @@ def main():
                     "release": {"devops-engineer", "tech-writer"}, "prd": {"product-manager"}, "adr": {"architect"}, "review": {"code-reviewer"}}
             if src.stem in need and not (need[src.stem] & set(cfg["roles"])):
                 log.append(f"SKIP  command {src.stem} (no matching roles)"); continue
-            text = render_text(src.read_text(), {**vars_, "ROLES": ", ".join(cfg["roles"]),
+            text = render_text(src.read_text(encoding="utf-8"), {**vars_, "ROLES": ", ".join(cfg["roles"]),
                                                   "TESTERS": ", ".join(r for r in cfg["roles"] if r.endswith("-tester"))})
             dest = root / ".claude/commands" / src.name
             write(dest, text, a.force, log)
@@ -195,7 +206,7 @@ def main():
         for src in sorted((T / "docs").rglob("*.md")):
             rel = src.relative_to(T / "docs")
             if rel.name == "PROJECT-CONTEXT.md": rel = rel.with_name(ctx_name)
-            write(docs / rel, render_text(src.read_text(), dvars), a.force, log)
+            write(docs / rel, render_text(src.read_text(encoding="utf-8"), dvars), a.force, log)
     print("\n".join(log))
     probs = [p for p in (check_frontmatter(f) for f in written if f.exists()) if p]
     print("CHECK:", ("; ".join(probs) if probs else "frontmatter OK") if written else "nothing to check")
