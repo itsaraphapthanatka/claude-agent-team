@@ -1,0 +1,51 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="shot.css">
+<style>
+.grid{display:grid;grid-template-columns:1.3fr .85fr;gap:30px;flex:1;margin-top:26px;min-height:0}
+pre{font:400 12.8px/1.62 Menlo,monospace;padding:16px 20px;white-space:pre-wrap;overflow:hidden}
+.k{color:var(--amber)} .s{color:var(--teal)} .m{color:var(--mut)} .b{color:var(--fg);font-weight:600}
+.note{display:flex;gap:13px;margin-bottom:20px}
+.note .sq{width:9px;height:9px;border-radius:2px;margin-top:7px;flex:none}
+.note h4{font:600 15px "Avenir Next";margin-bottom:4px}
+.note p{font-size:14px;line-height:1.52;color:var(--mut)}
+</style>
+<div class="kicker">Generated, not generic</div>
+<h1 style="font-size:36px">The agent knows the project<br>before it reads the task.</h1>
+<div class="grid">
+ <div class="panel" style="min-height:0;height:100%;overflow:hidden;display:flex;flex-direction:column">
+  <div class="bar"><span class="t">.claude/agents/code-reviewer.md</span></div>
+<pre><span class="m">---</span>
+<span class="k">name:</span> code-reviewer
+<span class="k">description:</span> <span class="m">"Read-only code reviewer for every <span class="b">PetGo</span>
+  repo. Finds real bugs, security issues… or when the
+  user asks to review / audit / ตรวจโค้ด / รีวิว."</span>
+<span class="k">tools:</span> Bash, Read, Grep, Glob
+<span class="k">model:</span> <span class="s">opus</span>
+<span class="k">effort:</span> <span class="s">high</span>
+<span class="k">memory:</span> project
+<span class="k">skills:</span>
+  - <span class="s">scrutinize</span>
+<span class="m">---</span>
+
+You are the code reviewer for <span class="b">PetGo</span>. You only read
+and report. You never edit files, never commit, never
+run <span class="m">git add</span> / <span class="m">git stash</span> / <span class="m">git checkout</span> / <span class="m">git reset</span>.
+
+<span class="b"># How you think (expert protocol)</span>
+<span class="b">1.</span> Load context first — <span class="m">docs/PROJECT-CONTEXT.md</span>,
+   then <span class="m">LEARNINGS.md</span>, then your own memory.
+<span class="b">6.</span> Reports are written in <span class="b">Thai</span>; identifiers
+   and paths stay in English.</pre>
+ </div>
+ <div>
+  <div class="note"><div class="sq" style="background:var(--amber)"></div><div>
+   <h4>Project name baked in</h4><p>Every template placeholder is replaced at render time. No "the project" prose.</p></div></div>
+  <div class="note"><div class="sq" style="background:var(--teal)"></div><div>
+   <h4>Model and effort per role</h4><p>Heavy roles get the top tier of the profile you chose. Overridable per role in the config.</p></div></div>
+  <div class="note"><div class="sq" style="background:var(--clay)"></div><div>
+   <h4>Hard rails, not suggestions</h4><p>Read-only roles cannot edit or commit. Testers only touch an isolated instance they start themselves.</p></div></div>
+  <div class="note"><div class="sq" style="background:var(--sand)"></div><div>
+   <h4>Skills preloaded when present</h4><p>Picks up scrutinize, debug-mantra, impeccable and post-mortem only if installed — otherwise a no-op.</p></div></div>
+  <div class="note"><div class="sq" style="background:#6E7684"></div><div>
+   <h4>Reports in your language</h4><p>Set once at init. Code identifiers always stay English.</p></div></div>
+ </div>
+</div>

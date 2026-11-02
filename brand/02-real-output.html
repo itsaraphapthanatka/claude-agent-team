@@ -1,0 +1,49 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="shot.css">
+<style>
+.grid{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;flex:1;margin-top:26px;min-height:0}
+pre{font:400 13.5px/1.62 Menlo,monospace;padding:18px 20px;white-space:pre;overflow:hidden}
+.g{color:var(--teal)} .a{color:var(--amber)} .m{color:var(--mut)} .w{color:var(--fg)}
+.tree{font:400 13.5px/1.82 Menlo,monospace;padding:18px 20px;color:var(--mut);white-space:pre}
+.tree b{color:var(--fg);font-weight:400}
+</style>
+<div class="kicker">Deterministic, inspectable output</div>
+<h1 style="font-size:36px">Every file is written by a renderer,<br>not improvised.</h1>
+<div class="grid">
+ <div class="panel" style="display:flex;flex-direction:column;min-height:0">
+  <div class="bar"><span class="dot" style="background:#D9574E"></span><span class="dot" style="background:#E0B24A"></span><span class="dot" style="background:#5FB3A1"></span><span class="t">PetGo — zsh</span></div>
+<pre><span class="m">$</span> <span class="w">/agent-team init --profile balanced --roles full</span>
+
+<span class="m">… explores repos, verifies check commands, asks 4 questions</span>
+
+<span class="m">$</span> <span class="w">python3 scripts/render.py --config \
+    .claude/agent-team.json</span>
+<span class="g">WROTE</span> .claude/agents/product-manager.md
+<span class="g">WROTE</span> .claude/agents/architect.md
+<span class="g">WROTE</span> .claude/agents/backend-dev.md
+<span class="m">…</span>
+<span class="g">WROTE</span> .claude/commands/test-all.md
+<span class="g">WROTE</span> docs/PROJECT-CONTEXT.md
+<span class="g">WROTE</span> docs/TEAM.md
+<span class="a">CHECK:</span> frontmatter OK
+
+<span class="m">$</span> <span class="w">python3 scripts/render.py --config … --check</span>
+<span class="g">OK: 17 agents, 10 commands, no frontmatter problems</span></pre>
+ </div>
+ <div class="panel" style="min-height:0">
+  <div class="bar"><span class="t">what landed in the project</span></div>
+<div class="tree">.claude/
+  agent-team.json
+  agents/        <b>17 files</b>
+  commands/      <b>10 files</b>
+  agent-memory/  <b>per role</b>
+docs/
+  <b>PROJECT-CONTEXT.md</b>
+  TEAM.md
+  LEARNINGS.md
+  product/BACKLOG.md</div>
+  <div style="padding:0 20px 18px;color:var(--mut);font-size:14px;line-height:1.55;border-top:1px solid var(--line);margin-top:6px;padding-top:16px">
+  Nothing is overwritten without <span class="mono" style="color:var(--fg)">--force</span>, and a
+  <span class="mono" style="color:var(--fg)">.bak</span> is kept for anything that is. Commit the whole
+  <span class="mono" style="color:var(--fg)">.claude/</span> folder — agent memory included, it holds no secrets.</div>
+ </div>
+</div>

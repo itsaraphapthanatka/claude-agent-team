@@ -1,0 +1,58 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="shot.css">
+<style>
+.flow{margin-top:14px}
+.flow h3{font:500 15px Menlo,monospace;color:var(--amber);margin-bottom:14px}
+.row{display:flex;align-items:stretch;gap:9px;flex-wrap:nowrap}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;
+font:500 12.5px Menlo,monospace;display:flex;align-items:center;text-align:center;justify-content:center;flex:1;line-height:1.35}
+.step.t{border-color:#6E6340;color:var(--sand)} .step.b{border-color:#3C6A61;color:var(--teal)}
+.step.a{border-color:#6E4A42;color:var(--clay)}
+.step.gate{background:var(--amber);border-color:var(--amber);color:var(--ink);font-weight:600;flex:1.1}
+.par{display:flex;flex-direction:column;gap:6px;flex:1.5}
+.par .step{flex:none}
+.arw{align-self:center;color:#4A505C;font-size:16px;flex:none}
+.legend{display:flex;gap:26px;margin-top:auto;font-size:14px;color:var(--mut);align-items:center}
+.lg{display:flex;align-items:center;gap:8px}.lg i{width:10px;height:10px;border-radius:3px;display:block}
+.cmds{display:flex;gap:9px;margin-top:22px;flex-wrap:wrap}
+.cmds span{font:500 13px Menlo,monospace;color:var(--mut);background:var(--panel);border:1px solid var(--line);
+border-radius:7px;padding:7px 11px}
+</style>
+<div class="kicker">Pipelines, not one-off prompts</div>
+<h1 style="font-size:36px">Ten commands that run the team<br>in the right order.</h1>
+
+<div class="flow">
+ <h3>/feature &lt;idea&gt;</h3>
+ <div class="row">
+  <div class="step t">product-<br>manager</div><div class="arw">›</div>
+  <div class="step t">architect<br>+ designers</div><div class="arw">›</div>
+  <div class="step gate">checkpoint<br>you approve</div><div class="arw">›</div>
+  <div class="par"><div class="step b">devs, in parallel per repo</div></div><div class="arw">›</div>
+  <div class="par"><div class="step a">code-reviewer</div><div class="step a">security-engineer</div></div><div class="arw">›</div>
+  <div class="step b">test-<br>engineer</div><div class="arw">›</div>
+  <div class="step t">tech-<br>writer</div>
+ </div>
+</div>
+
+<div class="flow" style="margin-top:34px">
+ <h3>/fix &lt;bug&gt;</h3>
+ <div class="row">
+  <div class="step a">bug-triager<br>reproduces</div><div class="arw">›</div>
+  <div class="step b">owning dev<br>fixes</div><div class="arw">›</div>
+  <div class="par"><div class="step a">code-reviewer</div><div class="step a">security-engineer</div></div><div class="arw">›</div>
+  <div class="step b">regression<br>test</div><div class="arw">›</div>
+  <div class="step a">re-test</div><div class="arw">›</div>
+  <div class="step t">ticket<br>closed</div>
+ </div>
+</div>
+
+<div class="cmds">
+ <span>/test-all</span><span>/prd</span><span>/adr</span><span>/security-audit</span>
+ <span>/release</span><span>/review</span><span>/standup</span><span>/team</span>
+</div>
+
+<div class="legend">
+ <div class="lg"><i style="background:var(--sand)"></i>think</div>
+ <div class="lg"><i style="background:var(--teal)"></i>build</div>
+ <div class="lg"><i style="background:var(--clay)"></i>adversarial</div>
+ <div class="lg"><i style="background:var(--amber)"></i>you decide before any code is touched</div>
+</div>
