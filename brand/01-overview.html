@@ -1,0 +1,55 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="shot.css">
+<style>
+.wrap{display:grid;grid-template-columns:1fr 470px;gap:56px;align-items:center;flex:1}
+.org{display:flex;flex-direction:column;align-items:center;gap:0}
+.root{background:var(--amber);color:var(--ink);border-radius:13px;padding:13px 20px;font:600 15px Menlo,monospace}
+.vline{width:3px;height:26px;background:#454B57}
+.hline{height:3px;background:#454B57;width:100%}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;margin-top:0}
+.col{display:flex;flex-direction:column;align-items:center;gap:9px}
+.col .stub{width:3px;height:20px;background:#454B57}
+.cap{font:600 11px "Avenir Next";letter-spacing:.11em;text-transform:uppercase;margin-bottom:3px}
+.role{font:500 12.5px Menlo,monospace;padding:5px 9px;border-radius:6px;width:100%;text-align:center;color:var(--ink)}
+.stats{display:flex;gap:34px;margin-top:26px}
+.stat .n{font:600 34px "Avenir Next";letter-spacing:-.02em}
+.stat .l{font-size:14px;color:var(--mut);margin-top:2px}
+</style>
+<div class="wrap">
+ <div>
+  <div class="kicker">Claude Code skill</div>
+  <h1>A software company<br>of subagents, built<br>from <em>your</em> codebase.</h1>
+  <p class="sub">One command explores the repo, verifies how it builds and tests, then writes 17 specialist agents and 10 pipelines that already know your stack.</p>
+  <div class="stats">
+   <div class="stat"><div class="n">17</div><div class="l">role agents</div></div>
+   <div class="stat"><div class="n">10</div><div class="l">pipelines</div></div>
+   <div class="stat"><div class="n">31</div><div class="l">files written</div></div>
+  </div>
+ </div>
+ <div class="org">
+  <div class="root">docs/PROJECT-CONTEXT.md</div>
+  <div class="vline"></div><div class="hline"></div>
+  <div class="cols">
+   <div class="col"><div class="stub"></div><div class="cap" style="color:var(--sand)">Think</div>
+    <div class="role" style="background:var(--sand)">product-manager</div>
+    <div class="role" style="background:var(--sand)">architect</div>
+    <div class="role" style="background:var(--sand)">ux-designer</div>
+    <div class="role" style="background:var(--sand)">ui-designer</div>
+    <div class="role" style="background:var(--sand)">tech-writer</div></div>
+   <div class="col"><div class="stub"></div><div class="cap" style="color:var(--teal)">Build</div>
+    <div class="role" style="background:var(--teal)">backend-dev</div>
+    <div class="role" style="background:var(--teal)">mobile-dev</div>
+    <div class="role" style="background:var(--teal)">web-dev</div>
+    <div class="role" style="background:var(--teal)">devops-engineer</div>
+    <div class="role" style="background:var(--teal)">test-engineer</div></div>
+   <div class="col"><div class="stub"></div><div class="cap" style="color:var(--clay)">Adversarial</div>
+    <div class="role" style="background:var(--clay)">code-reviewer</div>
+    <div class="role" style="background:var(--clay)">security-engineer</div>
+    <div class="role" style="background:var(--clay)">api-tester</div>
+    <div class="role" style="background:var(--clay)">e2e-tester</div>
+    <div class="role" style="background:var(--clay)">bug-triager</div>
+    <div class="role" style="background:var(--clay)">+ 2 more</div></div>
+  </div>
+ </div>
+</div>
+<div class="foot"><span class="chip" style="background:#262B33;color:var(--fg)">/agent-team init</span>
+<span>answers four questions, then builds the team</span></div>

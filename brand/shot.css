@@ -1,0 +1,18 @@
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#15171C;--panel:#1C1F25;--line:#2E333D;--fg:#F6F2E9;--mut:#949BA8;
+--amber:#D98A2B;--sand:#EBD9A0;--teal:#5FB3A1;--clay:#D98A7A}
+html,body{width:1280px;height:800px;overflow:hidden}
+body{background:var(--ink);color:var(--fg);
+font:400 16px/1.5 "Avenir Next","Helvetica Neue",system-ui;-webkit-font-smoothing:antialiased;
+padding:56px 64px;display:flex;flex-direction:column}
+.kicker{font:600 13px/1 "Avenir Next";letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+h1{font:600 46px/1.12 "Avenir Next";letter-spacing:-.02em;margin:18px 0 0}
+h1 em{font-style:normal;color:var(--amber)}
+.sub{font-size:19px;line-height:1.5;color:var(--mut);margin-top:14px;max-width:760px}
+.mono{font-family:Menlo,ui-monospace,monospace}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.dot{width:11px;height:11px;border-radius:50%}
+.bar .t{margin-left:10px;font:500 13px Menlo,monospace;color:var(--mut)}
+.foot{margin-top:auto;display:flex;align-items:center;gap:14px;color:var(--mut);font-size:15px}
+.chip{display:inline-block;padding:5px 11px;border-radius:7px;font:500 14px Menlo,monospace}
